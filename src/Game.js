@@ -27,6 +27,7 @@ class Game extends React.Component {
 			history: history.concat([{
 				squares: squares,
 				currentLocation: getLocation(i),
+				selectedStepNumber: history.length,
 			}]),
 			stepNumber: history.length,
 			xIsNext: !this.state.xIsNext,
@@ -48,11 +49,13 @@ class Game extends React.Component {
 		const moves = history.map((step, move) => {
 			const currentLocation = step.currentLocation || '';
 			const desc = move ? `Go back to move #${move} (${currentLocation})` : 'Go to game start';
+			const highlightCurrentMove = (step.selectedStepNumber === this.state.stepNumber);
 
 			return (
 				<li key={move}>
-					<button onClick={() =>
-						this.jumpTo(move)}>{desc}</button>
+					<button className={highlightCurrentMove ? "bold" : ""} onClick={() => this.jumpTo(move)} >
+						{desc}
+					</button>
 				</li>
 			);
 		});
