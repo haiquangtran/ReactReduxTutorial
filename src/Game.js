@@ -12,7 +12,7 @@ class Game extends React.Component {
 			xIsNext: true,
 		}
 	}
-	
+
 	handleClick(i) {
 		const history = this.state.history.slice(0, this.state.stepNumber + 1);
 		const current = history[history.length - 1];
@@ -26,6 +26,7 @@ class Game extends React.Component {
 		this.setState({
 			history: history.concat([{
 				squares: squares,
+				currentLocation: getLocation(i),
 			}]),
 			stepNumber: history.length,
 			xIsNext: !this.state.xIsNext,
@@ -36,7 +37,7 @@ class Game extends React.Component {
 		this.setState({
 			stepNumber: step,
 			xIsNext: (step % 2) === 0,
-		}) 
+		})
 	}
 
 	render() {
@@ -45,12 +46,12 @@ class Game extends React.Component {
 		const winner = calculateWinner(current.squares);
 
 		const moves = history.map((step, move) => {
-			const desc = move ? 
-			'Go to move #' + move : 
-			'Go to game start';
+			const currentLocation = step.currentLocation || '';
+			const desc = move ? `Go back to move #${move} (${currentLocation})` : 'Go to game start';
+
 			return (
 				<li key={move}>
-					<button onClick={() => 
+					<button onClick={() =>
 						this.jumpTo(move)}>{desc}</button>
 				</li>
 			);
@@ -79,6 +80,22 @@ class Game extends React.Component {
 		);
 	}
 }
+
+function getLocation(boardIndex) {
+	const locations = {
+		0: 'row: 1, col: 1',
+		1: 'row: 1, col: 2',
+		2: 'row: 1, col: 3',
+		3: 'row: 2, col: 1',
+		4: 'row: 2, col: 2',
+		5: 'row: 2, col: 3',
+		6: 'row: 3, col: 1',
+		7: 'row: 3, col: 2',
+		8: 'row: 3, col: 3',
+	};
+
+	return locations[boardIndex];
+};
 
 function calculateWinner(squares) {
 	const lines = [
