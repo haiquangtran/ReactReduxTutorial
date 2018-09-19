@@ -64,7 +64,7 @@ class Game extends React.Component {
 
 			return (
 				<li key={move}>
-					<button className={highlightCurrentMove ? "bold" : ""} onClick={() => this.jumpTo(i)} >
+					<button key={move} className={highlightCurrentMove ? "bold" : ""} onClick={() => this.jumpTo(i)} >
 						{desc}
 					</button>
 				</li>
