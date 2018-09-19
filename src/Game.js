@@ -7,9 +7,10 @@ class Game extends React.Component {
 		this.state = {
 			history: [{
 				squares: Array(9).fill(null),
+				historyStepNumber: 0
 			}],
 			stepNumber: 0,
-			xIsNext: true,
+			xIsNext: true
 		}
 	}
 
@@ -27,10 +28,19 @@ class Game extends React.Component {
 			history: history.concat([{
 				squares: squares,
 				currentLocation: getLocation(i),
-				selectedStepNumber: history.length,
+				historyStepNumber: history.length,
 			}]),
 			stepNumber: history.length,
 			xIsNext: !this.state.xIsNext,
+		});
+	}
+
+	toggleSortHistory() {
+		const test = this.state.history.length;
+		const reverse = this.state.history.slice().reverse();
+		this.setState({
+			history: reverse,
+			stepNumber: test - this.state.stepNumber,
 		});
 	}
 
@@ -46,14 +56,15 @@ class Game extends React.Component {
 		const current = history[this.state.stepNumber];
 		const winner = calculateWinner(current.squares);
 
-		const moves = history.map((step, move) => {
+		const moves = history.map((step, i) => {
+			const move = step.historyStepNumber;
 			const currentLocation = step.currentLocation || '';
 			const desc = move ? `Go back to move #${move} (${currentLocation})` : 'Go to game start';
-			const highlightCurrentMove = (step.selectedStepNumber === this.state.stepNumber);
+			const highlightCurrentMove = (move === this.state.stepNumber);
 
 			return (
 				<li key={move}>
-					<button className={highlightCurrentMove ? "bold" : ""} onClick={() => this.jumpTo(move)} >
+					<button className={highlightCurrentMove ? "bold" : ""} onClick={() => this.jumpTo(i)} >
 						{desc}
 					</button>
 				</li>
@@ -77,7 +88,8 @@ class Game extends React.Component {
 				</div>
 				<div className="game-info">
 					<div>{status}</div>
-					<ol>{moves}</ol>
+					<button onClick={() => this.toggleSortHistory()}>Sort</button>
+					<ul>{moves}</ul>
 				</div>
 			</div>
 		);

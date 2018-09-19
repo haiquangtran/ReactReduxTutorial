@@ -11,14 +11,15 @@ class Board extends React.Component {
 			for (let j = 0; j < cols; j++) {
 				boardColumns.push(this.renderSquare(counter++));
 			}
-			boardRows.push(<div className="board-row">{boardColumns}</div>);
+			boardRows.push(<div key={counter} className="board-row">{boardColumns}</div>);
 		}
-		
+
 		return <div>{boardRows}</div>
 	}
 
 	renderSquare(i) {
 		return <Square
+			key={i}
 			value={this.props.squares[i]}
 			onClick={() => this.props.onClick(i)}
 		/>;
