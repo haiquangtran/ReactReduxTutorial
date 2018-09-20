@@ -7,15 +7,15 @@ class Game extends React.Component {
 		this.state = {
 			history: [{
 				squares: Array(9).fill(null),
-				historyStepNumber: 0
+				stepNumber: 0,
 			}],
-			stepNumber: 0,
-			xIsNext: true
+			currentStepNumber: 0,
+			xIsNext: true,
 		}
 	}
 
 	handleClick(i) {
-		const history = this.state.history.slice(0, this.state.stepNumber + 1);
+		const history = this.state.history.slice(0, this.state.currentStepNumber + 1);
 		const current = history[history.length - 1];
 		const squares = current.squares.slice();
 
@@ -27,40 +27,37 @@ class Game extends React.Component {
 		this.setState({
 			history: history.concat([{
 				squares: squares,
-				currentLocation: getLocation(i),
-				historyStepNumber: history.length,
+				location: getLocation(i),
+				stepNumber: history.length,
 			}]),
-			stepNumber: history.length,
+			currentStepNumber: history.length,
 			xIsNext: !this.state.xIsNext,
 		});
 	}
 
 	toggleSortHistory() {
-		const test = this.state.history.length;
-		const reverse = this.state.history.slice().reverse();
 		this.setState({
-			history: reverse,
-			stepNumber: test - this.state.stepNumber,
+			history: this.state.history.slice().reverse()
 		});
 	}
 
 	jumpTo(step) {
 		this.setState({
-			stepNumber: step,
+			currentStepNumber: step,
 			xIsNext: (step % 2) === 0,
 		})
 	}
 
 	render() {
 		const history = this.state.history;
-		const current = history[this.state.stepNumber];
+		const current = history[this.state.currentStepNumber];
 		const winner = calculateWinner(current.squares);
 
 		const moves = history.map((step, i) => {
-			const move = step.historyStepNumber;
-			const currentLocation = step.currentLocation || '';
+			const move = step.stepNumber;
+			const currentLocation = step.location || '';
 			const desc = move ? `Go back to move #${move} (${currentLocation})` : 'Go to game start';
-			const highlightCurrentMove = (move === this.state.stepNumber);
+			const highlightCurrentMove = (move === this.state.currentStepNumber);
 
 			return (
 				<li key={move}>
