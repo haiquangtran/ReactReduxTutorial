@@ -11,6 +11,7 @@ class Game extends React.Component {
 			}],
 			currentStepNumber: 0,
 			xIsNext: true,
+			isAscending: true,
 		}
 	}
 
@@ -37,7 +38,7 @@ class Game extends React.Component {
 
 	toggleSortHistory() {
 		this.setState({
-			history: this.state.history.slice().reverse()
+			history: this.state.history.reverse(),
 		});
 	}
 
@@ -49,19 +50,20 @@ class Game extends React.Component {
 	}
 
 	render() {
-		const history = this.state.history;
-		const current = history[this.state.currentStepNumber];
+		const { history, currentStepNumber } = this.state;
+		const current = history[currentStepNumber];
 		const winner = calculateWinner(current.squares);
 
 		const moves = history.map((step, i) => {
-			const move = step.stepNumber;
+			const { currentStepNumber } = this.state;
 			const currentLocation = step.location || '';
-			const desc = move ? `Go back to move #${move} (${currentLocation})` : 'Go to game start';
-			const highlightCurrentMove = (move === this.state.currentStepNumber);
+			const desc = step.stepNumber ? `Go back to move #${step.stepNumber} (${currentLocation})` : 'Go to game start';
+			// TODO: 
+			const highlightCurrentMove = false;
 
 			return (
-				<li key={move}>
-					<button key={move} className={highlightCurrentMove ? "bold" : ""} onClick={() => this.jumpTo(i)} >
+				<li key={step.stepNumber}>
+					<button key={step.stepNumber} className={ highlightCurrentMove ? "bold" : ""} onClick={() => this.jumpTo(i)} >
 						{desc}
 					</button>
 				</li>
