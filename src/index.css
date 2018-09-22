@@ -73,7 +73,7 @@ ol, ul, li {
 }
 
 .winner-square {
-	background: green;
+	background: #8c7aff;
 }
 
 .square:focus {
