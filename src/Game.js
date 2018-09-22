@@ -58,7 +58,7 @@ class Game extends React.Component {
 			const { currentStepNumber } = this.state;
 			const currentLocation = step.location || '';
 			const desc = step.stepNumber ? `Go back to move #${step.stepNumber} (${currentLocation})` : 'Go to game start';
-			const highlightCurrentMove = currentStepNumber === i;
+			const highlightCurrentMove = (currentStepNumber === i);
 
 			return (
 				<li key={step.stepNumber}>
@@ -68,6 +68,7 @@ class Game extends React.Component {
 				</li>
 			);
 		});
+		const displayMoves = (this.state.isAscending ? moves : moves.reverse());
 
 		let status;
 		if (winner) {
@@ -87,7 +88,7 @@ class Game extends React.Component {
 				<div className="game-info">
 					<div>{status}</div>
 					<button onClick={() => this.toggleSortHistory()}>Sort</button>
-					<ul>{this.state.isAscending ? moves : moves.reverse() }</ul>
+					<ul>{displayMoves}</ul>
 				</div>
 			</div>
 		);
