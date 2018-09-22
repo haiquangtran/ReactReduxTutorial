@@ -2,6 +2,7 @@ import React from 'react';
 import Board from './Board';
 
 class Game extends React.Component {
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -52,8 +53,6 @@ class Game extends React.Component {
 	render() {
 		const { history, currentStepNumber } = this.state;
 		const current = history[currentStepNumber];
-		const winner = calculateWinner(current.squares);
-
 		const moves = history.map((step, i) => {
 			const { currentStepNumber } = this.state;
 			const currentLocation = step.location || '';
@@ -69,10 +68,11 @@ class Game extends React.Component {
 			);
 		});
 		const displayMoves = (this.state.isAscending ? moves : moves.reverse());
-
+		const winnerObject = calculateWinner(current.squares);
 		let status;
-		if (winner) {
-			status = 'Winner: ' + winner;
+		
+		if (winnerObject && winnerObject.player) {
+			status = 'Winner: ' + winnerObject.player;
 		} else {
 			status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
 		}
@@ -82,6 +82,7 @@ class Game extends React.Component {
 				<div className="game-board">
 					<Board
 						squares={current.squares}
+						winnerObject={winnerObject}
 						onClick={(i) => this.handleClick(i)}
 					/>
 				</div>
@@ -126,7 +127,10 @@ function calculateWinner(squares) {
 	for (let i = 0; i < lines.length; i++) {
 		const [a, b, c] = lines[i];
 		if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-			return squares[a];
+			return {
+				player: squares[a],
+				winningRow: lines[i]
+			};
 		}
 	}
 	return null;

@@ -37,6 +37,10 @@ ol, ul {
 	font-weight: bold;
 }
 
+.winner-square {
+	background: green;
+}
+
 .square:focus {
 	outline: none;
 }
