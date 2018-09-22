@@ -38,7 +38,7 @@ class Game extends React.Component {
 
 	toggleSortHistory() {
 		this.setState({
-			history: this.state.history.reverse(),
+			isAscending: !this.state.isAscending,
 		});
 	}
 
@@ -58,8 +58,7 @@ class Game extends React.Component {
 			const { currentStepNumber } = this.state;
 			const currentLocation = step.location || '';
 			const desc = step.stepNumber ? `Go back to move #${step.stepNumber} (${currentLocation})` : 'Go to game start';
-			// TODO: 
-			const highlightCurrentMove = false;
+			const highlightCurrentMove = currentStepNumber === i;
 
 			return (
 				<li key={step.stepNumber}>
@@ -88,7 +87,7 @@ class Game extends React.Component {
 				<div className="game-info">
 					<div>{status}</div>
 					<button onClick={() => this.toggleSortHistory()}>Sort</button>
-					<ul>{moves}</ul>
+					<ul>{this.state.isAscending ? moves : moves.reverse() }</ul>
 				</div>
 			</div>
 		);
