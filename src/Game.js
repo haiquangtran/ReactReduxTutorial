@@ -61,7 +61,7 @@ class Game extends React.Component {
 
 			return (
 				<li key={step.stepNumber}>
-					<button key={step.stepNumber} className={ highlightCurrentMove ? "bold" : ""} onClick={() => this.jumpTo(i)} >
+					<button key={step.stepNumber} className={`step-btn btn ${highlightCurrentMove ? "current-step" : ""}`} onClick={() => this.jumpTo(i)} >
 						{desc}
 					</button>
 				</li>
@@ -89,8 +89,9 @@ class Game extends React.Component {
 					/>
 				</div>
 				<div className="game-info">
-					<div>{status}</div>
-					<button onClick={() => this.toggleSortHistory()}>Sort</button>
+					<div className="status">{status}</div>
+					<button className="sort-btn btn" onClick={() => this.toggleSortHistory()}>Sort moves</button>
+					<h3>History of moves</h3>
 					<ul>{displayMoves}</ul>
 				</div>
 			</div>
