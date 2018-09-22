@@ -68,7 +68,7 @@ class Game extends React.Component {
 			);
 		});
 		const displayMoves = (this.state.isAscending ? moves : moves.reverse());
-		const winnerObject = calculateWinner(current.squares);
+		const winnerObject = calculateWinner(current.squares) || {};
 		let status;
 		
 		if (winnerObject && winnerObject.player) {
@@ -82,7 +82,7 @@ class Game extends React.Component {
 				<div className="game-board">
 					<Board
 						squares={current.squares}
-						winnerObject={winnerObject}
+						winningRow={winnerObject.winningRow}
 						onClick={(i) => this.handleClick(i)}
 					/>
 				</div>
